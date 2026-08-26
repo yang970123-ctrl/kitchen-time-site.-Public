@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://your-domain.example/sitemap.xml
+Sitemap: https://yang970123-ctrl.github.io/kitchen-time-site.-Public/sitemap.xml

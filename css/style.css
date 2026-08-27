@@ -420,3 +420,96 @@ a{color:inherit;text-decoration:none;}
 }
   .timer-box .display{ font-size:2rem; }
 }
+/* ---------- 하단 고정 타이머 (전체 페이지 공통) ---------- */
+body{ padding-bottom:64px; }
+.sticky-timer{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  background:var(--card);
+  border-top:1px solid var(--line);
+  box-shadow:0 -4px 16px rgba(0,0,0,0.4);
+  font-family:var(--font-mono);
+}
+.sticky-timer-toggle{
+  background:none;
+  border:none;
+  color:var(--gold);
+  font-size:1.25rem;
+  line-height:1;
+  cursor:pointer;
+  padding:4px 6px;
+  flex:none;
+}
+.sticky-timer-body{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:1;
+  flex-wrap:wrap;
+}
+.sticky-timer.collapsed .sticky-timer-body{ display:none; }
+.sticky-timer-input{
+  width:56px;
+  padding:6px 8px;
+  border-radius:6px;
+  border:1px solid var(--line);
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-mono);
+  text-align:center;
+  font-size:.9rem;
+}
+.sticky-timer-unit{
+  color:var(--text-muted);
+  font-size:.78rem;
+}
+.sticky-timer-input-sec{
+  width:48px;
+}
+.sticky-timer-display{
+  font-size:1.05rem;
+  font-weight:700;
+  color:var(--gold);
+  min-width:54px;
+  text-align:center;
+}
+.sticky-timer.done .sticky-timer-display{
+  color:var(--rare);
+  animation:sticky-timer-pulse 1s infinite;
+}
+.sticky-timer.warn .sticky-timer-display{
+  color:#E4572E;
+}
+@keyframes sticky-timer-pulse{
+  0%,100%{ opacity:1; }
+  50%{ opacity:.35; }
+}
+.sticky-timer-btn{
+  background:var(--gold);
+  color:var(--bg);
+  border:none;
+  border-radius:6px;
+  padding:7px 14px;
+  font-weight:700;
+  font-size:.85rem;
+  cursor:pointer;
+}
+.sticky-timer-btn-ghost{
+  background:transparent;
+  color:var(--text-muted);
+  border:1px solid var(--line);
+}
+@media (max-width:560px){
+  body{ padding-bottom:58px; }
+  .sticky-timer{ padding:8px 10px; gap:6px; }
+  .sticky-timer-input{ width:40px; font-size:.8rem; }
+  .sticky-timer-input-sec{ width:36px; }
+  .sticky-timer-display{ font-size:.92rem; min-width:44px; }
+  .sticky-timer-btn{ padding:6px 10px; font-size:.78rem; }
+  .sticky-timer-unit{ display:none; }
+}

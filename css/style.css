@@ -396,6 +396,18 @@ a{color:inherit;text-decoration:none;}
 @media (max-width: 560px){
   .site-nav a{ margin-left:12px; font-size:.78rem; }
   .hero{ padding:40px 0 28px; }
-  .gauge-marker{ font-size:.66rem; }
+.gauge-marker{
+  font-size:.6rem;
+  white-space:normal;
+  max-width:56px;
+  line-height:1.15;
+  text-align:center;
+}
+.gauge-marker:nth-of-type(2){
+  top:-46px;
+}
+.gauge-wrap > div[style*="padding-top"]{
+  padding-top:48px !important;
+}
   .timer-box .display{ font-size:2rem; }
 }

@@ -1,3 +1,8 @@
+html{
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 /* =========================================================
    고기굽는시간.site — 정육점 라벨 컨셉
    Color  : 숯불 espresso #1C1410 / 카드 #2A2019 / 엠버 #C1440E / 골드 #D4A017 / 텍스트 #F2E9DD
@@ -512,20 +517,4 @@ body{ padding-bottom:64px; }
   .sticky-timer-display{ font-size:.92rem; min-width:44px; }
   .sticky-timer-btn{ padding:6px 10px; font-size:.78rem; }
   .sticky-timer-unit{ display:none; }
-}
-.temp-notice{
-  margin-top:14px;
-  padding:12px 16px;
-  background:rgba(212,160,23,0.12);
-  border:1px solid var(--gold);
-  border-radius:8px;
-  color:var(--text);
-  font-size:.88rem;
-  line-height:1.6;
-}
-.temp-notice strong{
-  color:var(--gold);
-}
-@media (max-width:560px){
-  .temp-notice{ font-size:.82rem; padding:10px 12px; }
 }

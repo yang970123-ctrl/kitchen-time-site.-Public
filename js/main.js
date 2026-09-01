@@ -97,12 +97,11 @@
     const prefix = isSubPage ? '' : 'pages/';
 
     const links = [
-      { href: homeHref, label: '🏠 홈', icon: true },
       { href: prefix + 'airfryer-general.html', label: '🍟 에어프라이어 조리시간' },
       { href: prefix + 'meat-cuts.html', label: '🥩 고기 부위별 굽는 시간' },
       { href: prefix + 'egg-boil.html', label: '🥚 계란 삶는 시간' },
       { href: prefix + 'storage-meat-seafood.html', label: '🧊 냉장·냉동 보관기간' },
-      { href: prefix + 'microwave-time.html', label: '⏱ 전자레인지 데우는 시간' },
+      { href: prefix + 'microwave-time.html', label: '♨️ 전자레인지 데우는 시간' },
     ];
 
     // 기존 홈/카테고리 텍스트 링크 숨기기

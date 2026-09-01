@@ -466,9 +466,9 @@ body{ padding-bottom:64px; }
 .sticky-timer-body{
   display:flex;
   align-items:center;
-  gap:8px;
+  justify-content:center;
+  gap:10px;
   flex:1;
-  flex-wrap:wrap;
 }
 .sticky-timer.collapsed .sticky-timer-body{ display:none; }
 .sticky-timer-input{
@@ -480,7 +480,7 @@ body{ padding-bottom:64px; }
   color:var(--text);
   font-family:var(--font-mono);
   text-align:center;
-  font-size:.9rem;
+  font-size:1rem;
 }
 .sticky-timer-unit{
   color:var(--text-muted);
@@ -490,7 +490,7 @@ body{ padding-bottom:64px; }
   width:48px;
 }
 .sticky-timer-display{
-  font-size:1.05rem;
+  font-size:1.2rem;
   font-weight:700;
   color:var(--gold);
   min-width:54px;
@@ -525,7 +525,7 @@ body{ padding-bottom:64px; }
 @media (max-width:560px){
   body{ padding-bottom:58px; }
   .sticky-timer{ padding:8px 10px; gap:6px; }
-  .sticky-timer-input{ width:40px; font-size:.8rem; }
+  .sticky-timer-input{ width:44px; font-size:.95rem; }
   .sticky-timer-input-sec{ width:36px; }
   .sticky-timer-display{ font-size:.92rem; min-width:44px; }
   .sticky-timer-btn{ padding:6px 10px; font-size:.78rem; }

@@ -407,14 +407,13 @@ a{color:inherit;text-decoration:none;}
 /* ---------- Responsive ---------- */
 @media (max-width: 560px){
   .site-header .container{
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
 }
 .brand{
   font-size: 1.05rem;
   flex-wrap: wrap;
-  justify-content: center;
 }
 .site-nav a{
   margin-left: 0;

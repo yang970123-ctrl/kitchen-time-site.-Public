@@ -88,6 +88,69 @@
 
   // ---------- 사이트 전체 하단 고정 타이머 ----------
   function initStickyTimer() {
+      // ---------- 햄버거 카테고리 메뉴 ----------
+  function initCategoryMenu() {
+    if (document.querySelector('.category-drawer')) return;
+
+    const isSubPage = location.pathname.includes('/pages/');
+    const homeHref = isSubPage ? '../index.html' : 'index.html';
+    const prefix = isSubPage ? '' : 'pages/';
+
+    const links = [
+      { href: homeHref, label: '🏠 홈', icon: true },
+      { href: prefix + 'airfryer-general.html', label: '🍟 에어프라이어 조리시간' },
+      { href: prefix + 'meat-cuts.html', label: '🥩 고기 부위별 굽는 시간' },
+      { href: prefix + 'egg-boil.html', label: '🥚 계란 삶는 시간' },
+      { href: prefix + 'storage-meat-seafood.html', label: '🧊 냉장·냉동 보관기간' },
+      { href: prefix + 'microwave-time.html', label: '⏱ 전자레인지 데우는 시간' },
+    ];
+
+    // 기존 홈/카테고리 텍스트 링크 숨기기
+    const oldNav = document.querySelector('.site-nav');
+    if (oldNav) oldNav.style.display = 'none';
+
+    // 햄버거 버튼 생성
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'category-menu-toggle';
+    toggle.setAttribute('aria-label', '카테고리 메뉴 열기');
+    toggle.textContent = '☰';
+    const headerContainer = document.querySelector('.site-header .container');
+    if (headerContainer) headerContainer.appendChild(toggle);
+
+    // 오버레이 생성
+    const overlay = document.createElement('div');
+    overlay.className = 'category-overlay';
+    document.body.appendChild(overlay);
+
+    // 드로어(슬라이드 메뉴) 생성
+    const drawer = document.createElement('nav');
+    drawer.className = 'category-drawer';
+    drawer.innerHTML = `
+      <div class="category-drawer-title">카테고리</div>
+      <ul>
+        ${links.map((l) => `<li><a href="${l.href}">${l.label}</a></li>`).join('')}
+      </ul>
+    `;
+    document.body.appendChild(drawer);
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+
+    toggle.addEventListener('click', openDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    drawer.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', closeDrawer);
+    });
+  }
+
+  initCategoryMenu();
     if (document.querySelector('.sticky-timer')) return;
 
     const bar = document.createElement('div');

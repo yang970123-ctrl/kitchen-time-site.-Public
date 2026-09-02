@@ -17,6 +17,13 @@
 
 <!-- 시범 기능 카드 전용 스타일: 기존 style.css의 색상 변수(--card, --gold, --ember 등)를 그대로 사용해 톤을 맞춤 -->
 <style>
+  .eyebrow--spread{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .eyebrow--spread span:nth-child(2){ text-align: center; }
+  .eyebrow--spread span:nth-child(3){ text-align: right; }
   .kt-experimental {
     display: block;
     position: relative;
@@ -88,7 +95,7 @@
 <main>
   <section class="hero">
     <div class="container">
-      <div class="eyebrow">EVERYDAY KITCHEN TIMES</div>
+      <div class="eyebrow eyebrow--spread"><span>EVERYDAY</span><span>KITCHEN</span><span>TIMES</span></div>
       <h1>매번 검색하던 주방 시간, 한 곳에 모았습니다</h1>
       <p>에어프라이어 조리시간, 고기 굽는 온도, 계란 삶는 시간, 냉장·냉동 보관기간, 전자레인지 데우는 시간까지 — 필요할 때 바로 찾아보세요.</p>
     </div>

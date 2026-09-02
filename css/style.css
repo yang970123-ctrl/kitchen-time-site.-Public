@@ -246,6 +246,52 @@ a{color:inherit;text-decoration:none;}
 }
 .gauge-note b{color:var(--text);}
 
+/* ---------- 표 필터 검색 (입력하면 실시간으로 항목이 추려짐) ---------- */
+.table-filter{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 18px 0 6px;
+}
+.table-filter .icon{
+  font-size: .95rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.table-filter input{
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: .92rem;
+}
+.table-filter input::placeholder{ color: var(--text-muted); }
+.table-filter:focus-within{ border-color: var(--gold); }
+.table-filter .count{
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.time-table tr.is-hidden{ display: none !important; }
+.table-filter-empty{
+  display: none;
+  padding: 20px 14px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .88rem;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  margin-top: 8px;
+}
+.table-filter-empty.show{ display: block; }
+
 /* ---------- Time table ---------- */
 .time-table{
   width:100%;

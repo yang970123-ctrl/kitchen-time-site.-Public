@@ -39,8 +39,14 @@
   <div class="ad-slot"><span>광고 영역 · 본문 상단 (Google AdSense 반응형)</span></div>
   <section class="section container">
     <h2>음식별 온도·시간 한눈에 보기</h2>
-    
-<table class="time-table time-table--split">
+
+    <div class="table-filter">
+      <span class="icon">🔍</span>
+      <input type="text" id="airfryer-filter" placeholder="음식 이름으로 찾기 (예: 삼겹살, 만두)" autocomplete="off">
+      <span class="count" id="airfryer-filter-count"></span>
+    </div>
+
+<table class="time-table time-table--split" id="airfryer-table">
   <caption>에어프라이어 예열 후 기준</caption>
   <thead><tr><th>음식</th><th>온도</th><th>시간</th><th>비고</th></tr></thead>
   <tbody>
@@ -64,6 +70,7 @@
 <tr><td>함박·패티 (냉장, 1.5cm)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">가운데 갈라 확인</td></tr>
 </tbody>
 </table>
+    <p class="table-filter-empty" id="airfryer-filter-empty">일치하는 음식이 없어요. 다른 검색어로 찾아보세요.</p>
 
     <h2>에어프라이어 공통 팁</h2>
     <ul class="tip-list"><li>예열 3분은 생략하지 마세요. 예열 없이 넣으면 표보다 2~3분 더 걸립니다.</li><li>바스켓에 겹쳐 올리면 익는 속도가 크게 달라지니 한 겹으로 펴서 조리하세요.</li><li>냉동식품은 서로 붙어있는 것만 떼어주면 되고, 해동은 하지 않아도 됩니다.</li><li>정확도를 높이려면 표의 시간보다 1~2분 전에 문을 열어 상태를 확인하세요.</li></ul>
@@ -102,5 +109,29 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script>
+(function(){
+  var input = document.getElementById('airfryer-filter');
+  var rows = document.querySelectorAll('#airfryer-table tbody tr');
+  var countEl = document.getElementById('airfryer-filter-count');
+  var emptyEl = document.getElementById('airfryer-filter-empty');
+  var total = rows.length;
+
+  function applyFilter(){
+    var q = input.value.trim().toLowerCase();
+    var visible = 0;
+    rows.forEach(function(row){
+      var name = row.children[0].textContent.toLowerCase();
+      var match = name.indexOf(q) !== -1;
+      row.classList.toggle('is-hidden', !match);
+      if(match) visible++;
+    });
+    countEl.textContent = q ? (visible + ' / ' + total) : '';
+    emptyEl.classList.toggle('show', visible === 0);
+  }
+
+  input.addEventListener('input', applyFilter);
+})();
+</script>
 </body>
 </html>

@@ -277,6 +277,10 @@ a{color:inherit;text-decoration:none;}
 /* ---------- 모바일: time-table 카드형 전환 (가독성/잘림 문제 해결) ---------- */
 @media (max-width: 640px){
   .time-table thead{ display:none; }
+  .time-table caption{
+    display:block;
+    width:100%;
+  }
   .time-table, .time-table tbody, .time-table tr, .time-table td{
     display:block;
     width:100%;
@@ -316,6 +320,23 @@ a{color:inherit;text-decoration:none;}
     border-bottom:1px solid var(--line);
   }
   .time-table td:first-child::before{ content:none; }
+
+  /* 화면 폭이 남는 표 전용: 온도·시간을 좌우 2칸으로, 음식명·비고는 한 줄 전체로 배치 */
+  .time-table--split tr{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap:14px;
+  }
+  .time-table--split td{ display:flex; }
+  .time-table--split td:first-child{
+    grid-column: 1 / -1;
+  }
+  .time-table--split td:nth-child(4){
+    grid-column: 1 / -1;
+    margin-top:2px;
+    padding-top:8px;
+    border-top:1px dashed var(--line);
+  }
 }
 
 /* ---------- Tips ---------- */

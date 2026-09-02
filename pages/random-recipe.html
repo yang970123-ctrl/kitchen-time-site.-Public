@@ -3,96 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘 뭐 해먹지 — 재료 기반 랜덤 레시피</title>
+<title>재료로 뽑는 오늘의 요리 — 오늘의 주방시간</title>
+<meta name="description" content="집에 있는 재료를 체크하면 만들 수 있는 요리를 랜덤으로 추천합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Gothic+A1:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
 <style>
-  :root{
-    --bg: #F3F1E9;
-    --panel: #FFFFFF;
-    --ink: #2A2A24;
-    --ink-soft: #6B685E;
-    --line: #E4E0D3;
-    --sage: #5E7A5C;
-    --sage-deep: #3F5940;
-    --ochre: #C08A2E;
-    --ochre-soft: #F1DFB8;
-    --danger: #B5573A;
-    --radius-sm: 4px;
-    --radius-md: 10px;
-    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
-  }
-  *{ box-sizing: border-box; }
-  body{
-    margin:0;
-    background: var(--bg);
-    color: var(--ink);
-    line-height: 1.5;
-  }
-  .wrap{
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-  header{
-    margin-bottom: 36px;
-  }
-  .kicker{
-    color: var(--sage-deep);
-    font-size: 14px;
-    font-weight: 600;
-    margin: 0 0 8px;
-    letter-spacing: 0.01em;
-  }
-  h1{
-    font-size: 32px;
-    margin: 0 0 10px;
-    letter-spacing: -0.01em;
-  }
-  header p{
-    color: var(--ink-soft);
-    font-size: 15px;
-    margin: 0;
-    max-width: 520px;
-  }
-  .layout{
+  /* 이 페이지 전용 보조 스타일 — style.css의 CSS 변수를 그대로 사용 */
+  .rr-layout{
     display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 24px;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+    margin: 28px 0 60px;
     align-items: start;
   }
-  @media (max-width: 800px){
-    .layout{ grid-template-columns: 1fr; }
+  @media (max-width: 760px){
+    .rr-layout{ grid-template-columns: 1fr; }
   }
-  .panel{
-    background: var(--panel);
+  .rr-panel{
+    background: var(--card);
     border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: 24px;
+    border-radius: 6px;
+    padding: 22px;
   }
-  .cat-title{
+  .rr-cat-title{
     display:flex;
     align-items:baseline;
     justify-content: space-between;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
   }
-  .cat-title h2{
-    font-size: 15px;
+  .rr-cat-title h2{
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: none;
+    padding: 0;
     margin: 0;
   }
-  .cat-count{
-    font-size: 12px;
-    color: var(--ink-soft);
+  .rr-cat-title span{
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    color: var(--text-muted);
   }
-  .chip-group{
+  .rr-chip-group{
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 22px;
   }
-  .chip-group:last-child{ margin-bottom: 0; }
-  .chip{
-    position: relative;
-  }
-  .chip input{
+  .rr-chip-group:last-of-type{ margin-bottom: 0; }
+  .rr-chip{ position: relative; }
+  .rr-chip input{
     position: absolute;
     opacity: 0;
     width: 100%;
@@ -100,262 +65,235 @@
     margin: 0;
     cursor: pointer;
   }
-  .chip label{
+  .rr-chip label{
     display: inline-flex;
     align-items: center;
     padding: 7px 13px;
     border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 13.5px;
-    color: var(--ink);
-    background: #FBFAF6;
+    border-radius: 20px;
+    font-size: .82rem;
+    color: var(--text-muted);
+    background: transparent;
     cursor: pointer;
     transition: all .12s ease;
     user-select: none;
   }
-  .chip input:checked + label{
-    background: var(--sage);
-    border-color: var(--sage);
+  .rr-chip input:checked + label{
+    background: var(--ember);
+    border-color: var(--ember);
     color: #fff;
   }
-  .chip input:focus-visible + label{
-    outline: 2px solid var(--sage-deep);
+  .rr-chip input:focus-visible + label{
+    outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
-  .selected-bar{
+  .rr-selected-bar{
     margin-top: 4px;
     padding-top: 18px;
     border-top: 1px solid var(--line);
-    font-size: 13px;
-    color: var(--ink-soft);
+    font-size: .82rem;
+    color: var(--text-muted);
     min-height: 20px;
   }
-  .selected-bar strong{ color: var(--ink); }
-  .actions{
+  .rr-selected-bar b{ color: var(--text); font-weight: 500; }
+  .rr-actions{
     margin-top: 20px;
     display: flex;
     gap: 8px;
   }
-  button{
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-  }
-  .btn-primary{
-    flex: 1;
-    background: var(--sage-deep);
-    color: #fff;
-    padding: 13px 18px;
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: 600;
-    transition: background .12s ease;
-  }
-  .btn-primary:hover{ background: #33472F; }
-  .btn-primary:disabled{
-    background: #C9C6B9;
-    cursor: not-allowed;
-  }
-  .btn-ghost{
-    background: transparent;
-    color: var(--ink-soft);
-    padding: 13px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    border: 1px solid var(--line);
-  }
-  .btn-ghost:hover{ border-color: var(--ink-soft); color: var(--ink); }
+  .rr-actions .btn{ flex: 1; }
 
-  .result-area{
-    min-height: 460px;
-    display: flex;
-    flex-direction: column;
-  }
-  .empty-state{
-    flex: 1;
+  .rr-empty{
+    min-height: 380px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--ink-soft);
-    padding: 60px 20px;
-    background: var(--panel);
+    color: var(--text-muted);
+    background: var(--card);
     border: 1px dashed var(--line);
-    border-radius: var(--radius-md);
+    border-radius: 6px;
+    padding: 60px 20px;
   }
-  .empty-state .mark{
-    font-size: 34px;
-    margin-bottom: 14px;
-  }
-  .empty-state p{ margin: 4px 0; font-size: 14px; }
+  .rr-empty .mark{ font-size: 1.8rem; margin-bottom: 12px; }
+  .rr-empty p{ margin: 3px 0; font-size: .88rem; }
 
-  .recipe-card{
-    background: var(--panel);
+  .rr-card{
+    background: var(--card);
     border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: 32px;
+    border-radius: 6px;
+    padding: 30px;
     display: none;
   }
-  .recipe-card.show{ display: block; animation: rise .28s ease; }
-  @keyframes rise{
-    from{ opacity: 0; transform: translateY(8px); }
-    to{ opacity: 1; transform: translateY(0); }
-  }
-  .match-tag{
+  .rr-card.show{ display: block; }
+  .rr-match{
     display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--ochre);
-    background: var(--ochre-soft);
-    padding: 4px 10px;
-    border-radius: 999px;
-    margin-bottom: 14px;
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: 16px;
   }
-  .recipe-card h3{
-    font-size: 24px;
-    margin: 0 0 6px;
+  .rr-card h3{
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    color: var(--text);
   }
-  .meta-row{
+  .rr-meta{
     display: flex;
     gap: 16px;
-    font-size: 13px;
-    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--text-muted);
     margin-bottom: 22px;
-    padding-bottom: 20px;
+    padding-bottom: 18px;
     border-bottom: 1px solid var(--line);
   }
-  .meta-row span{ display: flex; align-items: center; gap: 5px; }
-  .rc-section{ margin-bottom: 20px; }
-  .rc-section:last-child{ margin-bottom: 0; }
-  .rc-section h4{
-    font-size: 13px;
-    color: var(--ink-soft);
-    font-weight: 600;
+  .rr-section{ margin-bottom: 20px; }
+  .rr-section:last-child{ margin-bottom: 0; }
+  .rr-section h4{
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
     margin: 0 0 10px;
   }
-  .ing-list{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .ing-pill{
-    font-size: 13px;
+  .rr-ing-list{ display: flex; flex-wrap: wrap; gap: 8px; }
+  .rr-ing-pill{
+    font-size: .78rem;
     padding: 5px 11px;
-    border-radius: 999px;
-    background: #F0F0E8;
-    color: var(--ink);
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text-muted);
   }
-  .ing-pill.have{
-    background: var(--sage);
+  .rr-ing-pill.have{
+    background: var(--ember);
+    border-color: var(--ember);
     color: #fff;
   }
-  .steps{
-    margin: 0;
-    padding-left: 20px;
-  }
-  .steps li{
-    margin-bottom: 9px;
-    font-size: 14.5px;
-  }
-  .steps li:last-child{ margin-bottom: 0; }
-  .card-actions{
-    margin-top: 24px;
-    display: flex;
-    gap: 8px;
-  }
-  .card-actions button{
-    padding: 10px 16px;
-    border-radius: var(--radius-sm);
-    font-size: 13.5px;
-    border: 1px solid var(--line);
-    background: #FBFAF6;
-    color: var(--ink);
-  }
-  .card-actions button:hover{ border-color: var(--sage-deep); color: var(--sage-deep); }
-  .pool-note{
+  .rr-steps{ margin: 0; padding-left: 20px; color: var(--text); }
+  .rr-steps li{ margin-bottom: 9px; font-size: .92rem; }
+  .rr-steps li:last-child{ margin-bottom: 0; }
+  .rr-card-actions{ margin-top: 24px; display: flex; gap: 8px; }
+  .rr-pool-note{
     margin-top: 14px;
-    font-size: 12.5px;
-    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: .72rem;
+    color: var(--text-muted);
   }
+  .rr-back{
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .rr-back:hover{ color: var(--gold); }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a href="../index.html" style="display:inline-block;margin-bottom:18px;font-size:13px;color:var(--ink-soft);text-decoration:none;">← 홈으로</a>
-  <header>
-    <p class="kicker">오늘의 주방시간 · 재료로 뽑기</p>
-    <h1>냉장고에 있는 재료로 뭘 해먹을까</h1>
-    <p>가진 재료를 체크하면 그걸로 만들 수 있는 요리를 랜덤으로 추천해드려요. 정확히 다 없어도 괜찮아요 — 겹치는 재료가 많을수록 우선 추천됩니다.</p>
-  </header>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../index.html">오늘의 주방시간 <span class="stamp">KITCHEN&nbsp;TIME</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">홈</a>
+      <a href="meat-cuts.html">카테고리 전체</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="layout">
-    <div class="panel">
-      <div class="cat-title">
-        <h2>채소</h2><span class="cat-count" id="cnt-veg">0개 선택</span>
-      </div>
-      <div class="chip-group" id="group-veg"></div>
-
-      <div class="cat-title">
-        <h2>고기 · 해산물</h2><span class="cat-count" id="cnt-meat">0개 선택</span>
-      </div>
-      <div class="chip-group" id="group-meat"></div>
-
-      <div class="cat-title">
-        <h2>기타 · 가공식품</h2><span class="cat-count" id="cnt-etc">0개 선택</span>
-      </div>
-      <div class="chip-group" id="group-etc"></div>
-
-      <div class="selected-bar" id="selected-summary">선택한 재료가 여기 표시돼요.</div>
-
-      <div class="actions">
-        <button class="btn-primary" id="btn-random" disabled>랜덤 레시피 뽑기</button>
-        <button class="btn-ghost" id="btn-reset">초기화</button>
-      </div>
-      <p class="pool-note" id="pool-note"></p>
+<main>
+  <section class="hero" style="padding-bottom:0;border-bottom:none;">
+    <div class="container">
+      <a class="rr-back" href="../index.html">← 홈으로</a>
+      <div class="eyebrow">EXPERIMENTAL · INGREDIENT MATCH</div>
+      <h1>냉장고에 있는 재료로 뭘 해먹을까</h1>
+      <p>가진 재료를 체크하면 그걸로 만들 수 있는 요리를 랜덤으로 추천해드려요. 정확히 다 없어도 괜찮아요 — 겹치는 재료가 많을수록 우선 추천됩니다.</p>
     </div>
+  </section>
 
-    <div class="result-area">
-      <div class="empty-state" id="empty-state">
-        <div class="mark">🍳</div>
-        <p>왼쪽에서 재료를 체크하고</p>
-        <p>버튼을 눌러보세요.</p>
+  <div class="container">
+    <div class="rr-layout">
+      <div class="rr-panel">
+        <div class="rr-cat-title"><h2>채소</h2><span id="cnt-veg">0개 선택</span></div>
+        <div class="rr-chip-group" id="group-veg"></div>
+
+        <div class="rr-cat-title"><h2>고기 · 해산물</h2><span id="cnt-meat">0개 선택</span></div>
+        <div class="rr-chip-group" id="group-meat"></div>
+
+        <div class="rr-cat-title"><h2>기타 · 가공식품</h2><span id="cnt-etc">0개 선택</span></div>
+        <div class="rr-chip-group" id="group-etc"></div>
+
+        <div class="rr-selected-bar" id="selected-summary">선택한 재료가 여기 표시돼요.</div>
+
+        <div class="rr-actions">
+          <button class="btn" id="btn-random" disabled>랜덤 레시피 뽑기</button>
+          <button class="btn secondary" id="btn-reset">초기화</button>
+        </div>
+        <p class="rr-pool-note" id="pool-note"></p>
       </div>
 
-      <div class="recipe-card" id="recipe-card">
-        <span class="match-tag" id="match-tag">일치율 --</span>
-        <h3 id="rc-name"></h3>
-        <div class="meta-row">
-          <span id="rc-time">⏱ --</span>
-          <span id="rc-level">🔥 --</span>
+      <div>
+        <div class="rr-empty" id="empty-state">
+          <div class="mark">🍳</div>
+          <p>왼쪽에서 재료를 체크하고</p>
+          <p>버튼을 눌러보세요.</p>
         </div>
-        <div class="rc-section">
-          <h4>필요한 재료</h4>
-          <div class="ing-list" id="rc-ingredients"></div>
-        </div>
-        <div class="rc-section">
-          <h4>만드는 법</h4>
-          <ol class="steps" id="rc-steps"></ol>
-        </div>
-        <div class="card-actions">
-          <button id="btn-again">이 재료로 다시 뽑기</button>
-          <button id="btn-shownum">뽑힐 수 있던 다른 후보 보기</button>
+
+        <div class="rr-card" id="recipe-card">
+          <span class="rr-match" id="match-tag">일치율 --</span>
+          <h3 id="rc-name"></h3>
+          <div class="rr-meta">
+            <span id="rc-time">⏱ --</span>
+            <span id="rc-level">🔥 --</span>
+          </div>
+          <div class="rr-section">
+            <h4>필요한 재료</h4>
+            <div class="rr-ing-list" id="rc-ingredients"></div>
+          </div>
+          <div class="rr-section">
+            <h4>만드는 법</h4>
+            <ol class="rr-steps" id="rc-steps"></ol>
+          </div>
+          <div class="rr-card-actions">
+            <button class="btn secondary" id="btn-again">이 재료로 다시 뽑기</button>
+            <button class="btn secondary" id="btn-shownum">다른 후보 보기</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-cats">
+    <a href="airfryer-general.html">에어프라이어</a>
+    <a href="meat-cuts.html">고기 굽기</a>
+    <a href="egg-boil.html">계란 삶기</a>
+    <a href="storage-meat-seafood.html">보관기간</a>
+    <a href="microwave-time.html">전자레인지</a>
+  </div>
+  <div class="container">
+    <span>&copy; 2026 오늘의 주방시간. 이 기능은 시범 운영 중이며 등록된 레시피 범위 내에서 추천됩니다.</span>
+    <span><a href="../index.html">홈으로</a></span>
+  </div>
+</footer>
 
 <script>
-// ---------- 재료 마스터 ----------
 const INGREDIENTS = {
   veg: ["양파","대파","마늘","감자","당근","애호박","버섯","김치","콩나물","시금치","파프리카","브로콜리"],
   meat: ["삼겹살","목살","다짐육","닭가슴살","닭다리살","베이컨","안심","등심","척아이롤","새우","오징어","계란"],
   etc: ["햄","두부","김","참치캔","치즈","떡","우동사리","라면사리","멸치","진미채"]
 };
 
-// ---------- 레시피 DB ----------
-// ing: 필수/주요 재료 태그. 매칭 점수 = 선택 재료와 겹치는 개수 / 레시피 재료 총 개수
 const RECIPES = [
   { name:"양파 계란볶음밥", ing:["양파","계란","대파"], time:"10분", level:"쉬움", steps:["밥과 재료를 준비한다","팬에 기름을 두르고 양파, 대파를 볶는다","계란을 풀어 함께 볶는다","밥을 넣고 소금·간장으로 간한다"] },
   { name:"버섯 두부 된장찌개", ing:["버섯","두부","대파","양파"], time:"20분", level:"쉬움", steps:["멸치육수를 낸다","된장을 풀어 끓인다","버섯, 두부, 양파를 넣고 끓인다","대파를 넣고 마무리한다"] },
@@ -389,7 +327,6 @@ const RECIPES = [
   { name:"감자채 볶음", ing:["감자","당근","양파"], time:"12분", level:"쉬움", steps:["감자와 당근을 채썬다","팬에 볶으며 소금간을 한다","양파를 넣고 마무리한다"] },
 ];
 
-// ---------- 상태 ----------
 const state = { selected: new Set(), lastPool: [], lastPicked: null };
 
 function renderChips(){
@@ -398,7 +335,7 @@ function renderChips(){
     const container = document.getElementById(map[cat]);
     container.innerHTML = list.map(name=>{
       const id = "ing-"+name;
-      return `<div class="chip">
+      return `<div class="rr-chip">
         <input type="checkbox" id="${id}" data-name="${name}">
         <label for="${id}">${name}</label>
       </div>`;
@@ -407,7 +344,7 @@ function renderChips(){
 }
 renderChips();
 
-document.querySelectorAll('.chip input').forEach(inp=>{
+document.querySelectorAll('.rr-chip input').forEach(inp=>{
   inp.addEventListener('change', ()=>{
     if(inp.checked) state.selected.add(inp.dataset.name);
     else state.selected.delete(inp.dataset.name);
@@ -424,18 +361,15 @@ function updateSummary(){
   document.getElementById('cnt-etc').textContent = etc+"개 선택";
 
   const summary = document.getElementById('selected-summary');
-  if(state.selected.size===0){
-    summary.innerHTML = "선택한 재료가 여기 표시돼요.";
-  }else{
-    summary.innerHTML = "선택: <strong>" + Array.from(state.selected).join(", ") + "</strong>";
-  }
+  summary.innerHTML = state.selected.size===0
+    ? "선택한 재료가 여기 표시돼요."
+    : "선택: <b>" + Array.from(state.selected).join(", ") + "</b>";
   document.getElementById('btn-random').disabled = state.selected.size === 0;
 }
 
 function scoreRecipe(recipe){
   const overlap = recipe.ing.filter(i=>state.selected.has(i)).length;
   if(overlap === 0) return -1;
-  // 겹치는 비율 (많이 겹칠수록 우선) + 겹치는 절대 개수
   return overlap / recipe.ing.length * 10 + overlap;
 }
 
@@ -445,14 +379,11 @@ function pickRecipe(excludeName){
     .map(r=>({ r, s: scoreRecipe(r) }))
     .filter(x=>x.s >= 0)
     .sort((a,b)=> b.s - a.s);
-
   if(scored.length === 0) return null;
-
   const topScore = scored[0].s;
   const topPool = scored.filter(x => x.s >= topScore - 1.5).map(x=>x.r);
   state.lastPool = topPool;
-  const picked = topPool[Math.floor(Math.random()*topPool.length)];
-  return picked;
+  return topPool[Math.floor(Math.random()*topPool.length)];
 }
 
 function renderRecipe(recipe){
@@ -462,53 +393,43 @@ function renderRecipe(recipe){
 
   const overlap = recipe.ing.filter(i=>state.selected.has(i)).length;
   const rate = Math.round(overlap/recipe.ing.length*100);
-  document.getElementById('match-tag').textContent = `보유 재료 일치율 ${rate}%`;
+  document.getElementById('match-tag').textContent = `일치율 ${rate}%`;
   document.getElementById('rc-name').textContent = recipe.name;
   document.getElementById('rc-time').textContent = "⏱ " + recipe.time;
   document.getElementById('rc-level').textContent = "🔥 " + recipe.level;
 
   document.getElementById('rc-ingredients').innerHTML = recipe.ing.map(i=>{
     const have = state.selected.has(i);
-    return `<span class="ing-pill ${have?'have':''}">${i}${have?' ✓':''}</span>`;
+    return `<span class="rr-ing-pill ${have?'have':''}">${i}${have?' ✓':''}</span>`;
   }).join("");
 
   document.getElementById('rc-steps').innerHTML = recipe.steps.map(s=>`<li>${s}</li>`).join("");
-
   document.getElementById('pool-note').textContent =
-    `현재 보유 재료 조합으로 등록된 레시피 ${state.lastPool.length}개 중 하나를 보여드렸어요.`;
+    `현재 조합으로 등록된 레시피 ${state.lastPool.length}개 중 하나입니다.`;
 
   state.lastPicked = recipe;
 }
 
 document.getElementById('btn-random').addEventListener('click', ()=>{
   const recipe = pickRecipe();
-  if(!recipe){
-    alert("아직 이 재료 조합에 맞는 레시피가 등록되어 있지 않아요. 다른 재료를 선택해보세요.");
-    return;
-  }
+  if(!recipe){ alert("아직 이 재료 조합에 맞는 레시피가 없어요. 다른 재료를 선택해보세요."); return; }
   renderRecipe(recipe);
 });
 
 document.getElementById('btn-again').addEventListener('click', ()=>{
   const recipe = pickRecipe(state.lastPicked ? state.lastPicked.name : null);
-  if(!recipe){
-    alert("이 재료로 뽑을 수 있는 다른 레시피가 더 없어요.");
-    return;
-  }
+  if(!recipe){ alert("이 재료로 뽑을 수 있는 다른 레시피가 더 없어요."); return; }
   renderRecipe(recipe);
 });
 
 document.getElementById('btn-shownum').addEventListener('click', ()=>{
-  if(state.lastPool.length <= 1){
-    alert("현재 이 조합으로는 후보가 1개뿐이에요.");
-    return;
-  }
+  if(state.lastPool.length <= 1){ alert("현재 이 조합으로는 후보가 1개뿐이에요."); return; }
   alert("후보 목록:\n" + state.lastPool.map(r=>"· "+r.name).join("\n"));
 });
 
 document.getElementById('btn-reset').addEventListener('click', ()=>{
   state.selected.clear();
-  document.querySelectorAll('.chip input').forEach(i=> i.checked = false);
+  document.querySelectorAll('.rr-chip input').forEach(i=> i.checked = false);
   updateSummary();
   document.getElementById('recipe-card').classList.remove('show');
   document.getElementById('empty-state').style.display = 'flex';

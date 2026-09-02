@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 주방시간 — 메인 진입 카드 데모</title>
+<style>
+  :root{
+    --bg: #F3F1E9;
+    --panel: #FFFFFF;
+    --ink: #2A2A24;
+    --ink-soft: #6B685E;
+    --line: #E4E0D3;
+    --sage: #5E7A5C;
+    --sage-deep: #3F5940;
+    --sage-glow: #EAF1E9;
+    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .wrap{
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 56px 24px;
+  }
+  .site-title{
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 6px;
+  }
+  h1{
+    font-size: 26px;
+    margin: 0 0 32px;
+  }
+
+  /* ---- 기존 메뉴 카드들 (참고용, 톤 낮춤) ---- */
+  .menu-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .menu-item{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+
+  /* ---- 강조 진입 카드 (핵심) ---- */
+  .feature-card{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    background: var(--sage-glow);
+    border: 1.5px solid var(--sage);
+    border-radius: 14px;
+    padding: 22px 22px 22px 20px;
+    overflow: hidden;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .feature-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(63,89,64,0.14);
+  }
+  .feature-card::before{
+    content:"";
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width: 5px;
+    background: var(--sage-deep);
+  }
+  .feature-top{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .feature-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background: var(--sage-deep);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .feature-card h2{
+    font-size: 19px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .feature-card p{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .feature-arrow{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: var(--sage-deep);
+  }
+
+  .note{
+    margin-top: 24px;
+    padding: 16px 18px;
+    background: #FBFAF6;
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  .page-filler{
+    padding: 60px 0;
+    text-align: center;
+    color: #C9C6B9;
+    font-size: 13px;
+    border-top: 1px dashed var(--line);
+    border-bottom: 1px dashed var(--line);
+    margin-bottom: 28px;
+  }
+  .page-filler p{ margin: 4px 0; }
+
+  .feature-card.experimental{
+    background: #F7F6F0;
+    border-color: #D6D2C2;
+  }
+  .feature-card.experimental::before{
+    background: #B8B49E;
+  }
+  .feature-card.experimental .feature-badge{
+    background: #8A8672;
+  }
+  .feature-card.experimental .feature-arrow{
+    color: #8A8672;
+  }
+  .feature-card.experimental:hover{
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="site-title">오늘의 주방시간</p>
+  <h1>메인 페이지 (일부)</h1>
+
+  <div class="menu-grid">
+    <div class="menu-item">에어프라이어 시간표</div>
+    <div class="menu-item">고기 부위별 조리시간</div>
+    <div class="menu-item">계란 삶는 시간</div>
+    <div class="menu-item">냉장·냉동 보관기간</div>
+  </div>
+
+  <div class="page-filler">
+    <p>· 기존 페이지의 다른 콘텐츠 영역 ·</p>
+    <p>(실제 사이트에서는 이 사이에 광고, 안내문구 등이 위치)</p>
+  </div>
+
+  <!-- 시범 단계: 최하단에 실험적 기능으로 배치 -->
+  <a class="feature-card experimental" href="random-recipe.html">
+    <div class="feature-top">
+      <span class="feature-badge">🧪 시범 기능</span>
+    </div>
+    <h2>재료만 체크하면 요리 완성</h2>
+    <p>냉장고에 있는 재료로 만들 수 있는 요리를 랜덤으로 추천 (테스트 중)</p>
+    <span class="feature-arrow">→</span>
+  </a>
+
+  <div class="note">
+    <strong>변경 사항</strong> — 시범 단계라 판단해 페이지 최상단이 아니라 맨 아래 레이어로 내렸습니다.
+    배지 문구도 "오늘 뭐하지?" 대신 "🧪 시범 기능"으로 바꿔 아직 정식 메뉴가 아님을 표시했고,
+    카드 톤도 기존 대비 살짝 눌러(테두리·배경 채도 낮춤) 시선이 과하게 쏠리지 않게 조정했습니다.
+    반응이 괜찮으면 그때 상단 메뉴로 승격하는 방향을 추천드립니다.
+  </div>
+</div>
+</body>
+</html>

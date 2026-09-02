@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘 뭐 해먹지 — 재료 기반 랜덤 레시피</title>
+<style>
+  :root{
+    --bg: #F3F1E9;
+    --panel: #FFFFFF;
+    --ink: #2A2A24;
+    --ink-soft: #6B685E;
+    --line: #E4E0D3;
+    --sage: #5E7A5C;
+    --sage-deep: #3F5940;
+    --ochre: #C08A2E;
+    --ochre-soft: #F1DFB8;
+    --danger: #B5573A;
+    --radius-sm: 4px;
+    --radius-md: 10px;
+    font-family: -apple-system, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+  header{
+    margin-bottom: 36px;
+  }
+  .kicker{
+    color: var(--sage-deep);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: 0.01em;
+  }
+  h1{
+    font-size: 32px;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  header p{
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin: 0;
+    max-width: 520px;
+  }
+  .layout{
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 800px){
+    .layout{ grid-template-columns: 1fr; }
+  }
+  .panel{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 24px;
+  }
+  .cat-title{
+    display:flex;
+    align-items:baseline;
+    justify-content: space-between;
+    margin: 0 0 12px;
+  }
+  .cat-title h2{
+    font-size: 15px;
+    margin: 0;
+  }
+  .cat-count{
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .chip-group{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .chip-group:last-child{ margin-bottom: 0; }
+  .chip{
+    position: relative;
+  }
+  .chip input{
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+  }
+  .chip label{
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13.5px;
+    color: var(--ink);
+    background: #FBFAF6;
+    cursor: pointer;
+    transition: all .12s ease;
+    user-select: none;
+  }
+  .chip input:checked + label{
+    background: var(--sage);
+    border-color: var(--sage);
+    color: #fff;
+  }
+  .chip input:focus-visible + label{
+    outline: 2px solid var(--sage-deep);
+    outline-offset: 2px;
+  }
+  .selected-bar{
+    margin-top: 4px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    min-height: 20px;
+  }
+  .selected-bar strong{ color: var(--ink); }
+  .actions{
+    margin-top: 20px;
+    display: flex;
+    gap: 8px;
+  }
+  button{
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary{
+    flex: 1;
+    background: var(--sage-deep);
+    color: #fff;
+    padding: 13px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 600;
+    transition: background .12s ease;
+  }
+  .btn-primary:hover{ background: #33472F; }
+  .btn-primary:disabled{
+    background: #C9C6B9;
+    cursor: not-allowed;
+  }
+  .btn-ghost{
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 13px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover{ border-color: var(--ink-soft); color: var(--ink); }
+
+  .result-area{
+    min-height: 460px;
+    display: flex;
+    flex-direction: column;
+  }
+  .empty-state{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ink-soft);
+    padding: 60px 20px;
+    background: var(--panel);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-md);
+  }
+  .empty-state .mark{
+    font-size: 34px;
+    margin-bottom: 14px;
+  }
+  .empty-state p{ margin: 4px 0; font-size: 14px; }
+
+  .recipe-card{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    display: none;
+  }
+  .recipe-card.show{ display: block; animation: rise .28s ease; }
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(8px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  .match-tag{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ochre);
+    background: var(--ochre-soft);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .recipe-card h3{
+    font-size: 24px;
+    margin: 0 0 6px;
+  }
+  .meta-row{
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .meta-row span{ display: flex; align-items: center; gap: 5px; }
+  .rc-section{ margin-bottom: 20px; }
+  .rc-section:last-child{ margin-bottom: 0; }
+  .rc-section h4{
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .ing-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ing-pill{
+    font-size: 13px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: #F0F0E8;
+    color: var(--ink);
+  }
+  .ing-pill.have{
+    background: var(--sage);
+    color: #fff;
+  }
+  .steps{
+    margin: 0;
+    padding-left: 20px;
+  }
+  .steps li{
+    margin-bottom: 9px;
+    font-size: 14.5px;
+  }
+  .steps li:last-child{ margin-bottom: 0; }
+  .card-actions{
+    margin-top: 24px;
+    display: flex;
+    gap: 8px;
+  }
+  .card-actions button{
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13.5px;
+    border: 1px solid var(--line);
+    background: #FBFAF6;
+    color: var(--ink);
+  }
+  .card-actions button:hover{ border-color: var(--sage-deep); color: var(--sage-deep); }
+  .pool-note{
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">오늘의 주방시간 · 재료로 뽑기</p>
+    <h1>냉장고에 있는 재료로 뭘 해먹을까</h1>
+    <p>가진 재료를 체크하면 그걸로 만들 수 있는 요리를 랜덤으로 추천해드려요. 정확히 다 없어도 괜찮아요 — 겹치는 재료가 많을수록 우선 추천됩니다.</p>
+  </header>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="cat-title">
+        <h2>채소</h2><span class="cat-count" id="cnt-veg">0개 선택</span>
+      </div>
+      <div class="chip-group" id="group-veg"></div>
+
+      <div class="cat-title">
+        <h2>고기 · 해산물</h2><span class="cat-count" id="cnt-meat">0개 선택</span>
+      </div>
+      <div class="chip-group" id="group-meat"></div>
+
+      <div class="cat-title">
+        <h2>기타 · 가공식품</h2><span class="cat-count" id="cnt-etc">0개 선택</span>
+      </div>
+      <div class="chip-group" id="group-etc"></div>
+
+      <div class="selected-bar" id="selected-summary">선택한 재료가 여기 표시돼요.</div>
+
+      <div class="actions">
+        <button class="btn-primary" id="btn-random" disabled>랜덤 레시피 뽑기</button>
+        <button class="btn-ghost" id="btn-reset">초기화</button>
+      </div>
+      <p class="pool-note" id="pool-note"></p>
+    </div>
+
+    <div class="result-area">
+      <div class="empty-state" id="empty-state">
+        <div class="mark">🍳</div>
+        <p>왼쪽에서 재료를 체크하고</p>
+        <p>버튼을 눌러보세요.</p>
+      </div>
+
+      <div class="recipe-card" id="recipe-card">
+        <span class="match-tag" id="match-tag">일치율 --</span>
+        <h3 id="rc-name"></h3>
+        <div class="meta-row">
+          <span id="rc-time">⏱ --</span>
+          <span id="rc-level">🔥 --</span>
+        </div>
+        <div class="rc-section">
+          <h4>필요한 재료</h4>
+          <div class="ing-list" id="rc-ingredients"></div>
+        </div>
+        <div class="rc-section">
+          <h4>만드는 법</h4>
+          <ol class="steps" id="rc-steps"></ol>
+        </div>
+        <div class="card-actions">
+          <button id="btn-again">이 재료로 다시 뽑기</button>
+          <button id="btn-shownum">뽑힐 수 있던 다른 후보 보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- 재료 마스터 ----------
+const INGREDIENTS = {
+  veg: ["양파","대파","마늘","감자","당근","애호박","버섯","김치","콩나물","시금치","파프리카","브로콜리"],
+  meat: ["삼겹살","목살","다짐육","닭가슴살","닭다리살","베이컨","안심","등심","척아이롤","새우","오징어","계란"],
+  etc: ["햄","두부","김","참치캔","치즈","떡","우동사리","라면사리","멸치","진미채"]
+};
+
+// ---------- 레시피 DB ----------
+// ing: 필수/주요 재료 태그. 매칭 점수 = 선택 재료와 겹치는 개수 / 레시피 재료 총 개수
+const RECIPES = [
+  { name:"양파 계란볶음밥", ing:["양파","계란","대파"], time:"10분", level:"쉬움", steps:["밥과 재료를 준비한다","팬에 기름을 두르고 양파, 대파를 볶는다","계란을 풀어 함께 볶는다","밥을 넣고 소금·간장으로 간한다"] },
+  { name:"버섯 두부 된장찌개", ing:["버섯","두부","대파","양파"], time:"20분", level:"쉬움", steps:["멸치육수를 낸다","된장을 풀어 끓인다","버섯, 두부, 양파를 넣고 끓인다","대파를 넣고 마무리한다"] },
+  { name:"삼겹살 김치볶음", ing:["삼겹살","김치","대파","양파"], time:"15분", level:"쉬움", steps:["삼겹살을 먼저 볶는다","김치와 양파를 넣고 함께 볶는다","대파를 올려 마무리한다"] },
+  { name:"목살 두루치기", ing:["목살","양파","대파","고추장"], time:"20분", level:"보통", steps:["목살을 양념에 재운다","팬에 양파를 깔고 목살을 올려 볶는다","대파를 넣고 마무리한다"] },
+  { name:"햄 김치볶음밥", ing:["햄","김치","대파","계란"], time:"12분", level:"쉬움", steps:["햄과 김치를 잘게 썬다","팬에 볶다가 밥을 넣는다","계란후라이를 올려 낸다"] },
+  { name:"참치 김치찌개", ing:["참치캔","김치","대파","두부"], time:"18분", level:"쉬움", steps:["김치를 볶다가 물을 붓는다","참치캔을 넣고 끓인다","두부와 대파를 넣고 마무리한다"] },
+  { name:"애호박 새우전", ing:["애호박","새우","계란"], time:"20분", level:"보통", steps:["애호박을 얇게 썬다","새우를 다져 올린다","계란옷을 입혀 부친다"] },
+  { name:"콩나물 국밥", ing:["콩나물","대파","마늘"], time:"20분", level:"쉬움", steps:["콩나물을 삶는다","육수에 마늘, 대파를 넣고 끓인다","밥을 말아 낸다"] },
+  { name:"닭가슴살 브로콜리 볶음", ing:["닭가슴살","브로콜리","마늘","파프리카"], time:"15분", level:"쉬움", steps:["닭가슴살을 한입 크기로 썬다","마늘을 볶다가 닭가슴살을 굽는다","브로콜리, 파프리카를 넣고 볶는다"] },
+  { name:"오징어 볶음", ing:["오징어","양파","대파","고추장"], time:"18분", level:"보통", steps:["오징어를 손질한다","야채를 볶다가 오징어를 넣는다","양념장을 넣고 강불에 볶는다"] },
+  { name:"베이컨 감자볶음", ing:["베이컨","감자","양파"], time:"15분", level:"쉬움", steps:["감자를 채썬다","베이컨을 볶다가 감자를 넣는다","양파를 넣고 소금간을 한다"] },
+  { name:"두부조림", ing:["두부","대파","마늘"], time:"20분", level:"쉬움", steps:["두부를 부쳐낸다","양념장을 만든다","두부에 양념장을 붓고 조린다"] },
+  { name:"떡볶이", ing:["떡","대파","고추장","어묵"], time:"20분", level:"쉬움", steps:["육수를 끓인다","고추장 양념을 푼다","떡과 대파를 넣고 조린다"] },
+  { name:"참치마요 주먹밥", ing:["참치캔","계란","김"], time:"10분", level:"쉬움", steps:["참치와 마요네즈를 섞는다","밥에 김을 뿌려 섞는다","속을 채워 주먹밥을 만든다"] },
+  { name:"안심 스테이크", ing:["안심","마늘","버섯"], time:"15분", level:"보통", steps:["안심을 실온에 둔다","팬을 달궈 겉면을 굽는다","마늘, 버섯을 곁들여 낸다"] },
+  { name:"등심 두루치기", ing:["등심","양파","대파","고추장"], time:"18분", level:"보통", steps:["등심을 양념에 재운다","양파를 깔고 볶는다","대파로 마무리한다"] },
+  { name:"척아이롤 구이", ing:["척아이롤","마늘","버섯"], time:"12분", level:"쉬움", steps:["고기를 상온에 둔다","마늘과 버섯을 먼저 굽는다","고기를 구워 곁들인다"] },
+  { name:"진미채 볶음", ing:["진미채","마늘","고추장"], time:"15분", level:"쉬움", steps:["진미채를 물에 살짝 불린다","양념장을 만든다","팬에 진미채와 양념을 넣고 볶는다"] },
+  { name:"우동 볶음", ing:["우동사리","양파","당근","햄"], time:"12분", level:"쉬움", steps:["우동면을 데친다","야채와 햄을 볶는다","면을 넣고 간장으로 볶는다"] },
+  { name:"라면사리 김치찜", ing:["라면사리","김치","대파","햄"], time:"15분", level:"쉬움", steps:["김치를 볶다가 물을 붓는다","라면사리와 햄을 넣는다","끓으면 대파를 올린다"] },
+  { name:"시금치 된장무침", ing:["시금치","마늘"], time:"10분", level:"쉬움", steps:["시금치를 데친다","마늘, 된장으로 양념한다","무쳐서 낸다"] },
+  { name:"닭다리살 감자조림", ing:["닭다리살","감자","당근","대파"], time:"25분", level:"보통", steps:["닭다리살을 손질한다","감자, 당근과 함께 조림장에 조린다","대파로 마무리한다"] },
+  { name:"새우 파프리카 볶음", ing:["새우","파프리카","마늘"], time:"12분", level:"쉬움", steps:["새우를 손질한다","마늘을 볶다가 새우를 넣는다","파프리카를 넣고 강불에 볶는다"] },
+  { name:"치즈 계란말이", ing:["계란","치즈","당근","대파"], time:"12분", level:"쉬움", steps:["계란을 풀고 당근, 대파를 다져 넣는다","팬에 얇게 부으며 만다","치즈를 중간에 넣고 만다"] },
+  { name:"김치 두부전", ing:["김치","두부","계란"], time:"15분", level:"쉬움", steps:["두부와 김치를 다진다","계란을 섞어 반죽한다","팬에 부친다"] },
+  { name:"멸치 볶음", ing:["멸치","마늘","고추장"], time:"12분", level:"쉬움", steps:["멸치를 마른 팬에 볶는다","양념을 넣고 다시 볶는다","마늘을 넣어 마무리한다"] },
+  { name:"콩나물 무침", ing:["콩나물","마늘","대파"], time:"10분", level:"쉬움", steps:["콩나물을 삶는다","마늘, 대파로 양념한다","무쳐서 낸다"] },
+  { name:"오징어 김치볶음", ing:["오징어","김치","양파"], time:"18분", level:"보통", steps:["오징어를 손질한다","김치와 양파를 볶는다","오징어를 넣고 강불에 볶는다"] },
+  { name:"버섯 계란찜", ing:["버섯","계란","대파"], time:"15분", level:"쉬움", steps:["계란을 풀어 육수와 섞는다","버섯을 잘게 썰어 넣는다","찜기에 쪄낸다"] },
+  { name:"감자채 볶음", ing:["감자","당근","양파"], time:"12분", level:"쉬움", steps:["감자와 당근을 채썬다","팬에 볶으며 소금간을 한다","양파를 넣고 마무리한다"] },
+];
+
+// ---------- 상태 ----------
+const state = { selected: new Set(), lastPool: [], lastPicked: null };
+
+function renderChips(){
+  const map = { veg: "group-veg", meat: "group-meat", etc: "group-etc" };
+  Object.entries(INGREDIENTS).forEach(([cat, list])=>{
+    const container = document.getElementById(map[cat]);
+    container.innerHTML = list.map(name=>{
+      const id = "ing-"+name;
+      return `<div class="chip">
+        <input type="checkbox" id="${id}" data-name="${name}">
+        <label for="${id}">${name}</label>
+      </div>`;
+    }).join("");
+  });
+}
+renderChips();
+
+document.querySelectorAll('.chip input').forEach(inp=>{
+  inp.addEventListener('change', ()=>{
+    if(inp.checked) state.selected.add(inp.dataset.name);
+    else state.selected.delete(inp.dataset.name);
+    updateSummary();
+  });
+});
+
+function updateSummary(){
+  const veg = INGREDIENTS.veg.filter(i=>state.selected.has(i)).length;
+  const meat = INGREDIENTS.meat.filter(i=>state.selected.has(i)).length;
+  const etc = INGREDIENTS.etc.filter(i=>state.selected.has(i)).length;
+  document.getElementById('cnt-veg').textContent = veg+"개 선택";
+  document.getElementById('cnt-meat').textContent = meat+"개 선택";
+  document.getElementById('cnt-etc').textContent = etc+"개 선택";
+
+  const summary = document.getElementById('selected-summary');
+  if(state.selected.size===0){
+    summary.innerHTML = "선택한 재료가 여기 표시돼요.";
+  }else{
+    summary.innerHTML = "선택: <strong>" + Array.from(state.selected).join(", ") + "</strong>";
+  }
+  document.getElementById('btn-random').disabled = state.selected.size === 0;
+}
+
+function scoreRecipe(recipe){
+  const overlap = recipe.ing.filter(i=>state.selected.has(i)).length;
+  if(overlap === 0) return -1;
+  // 겹치는 비율 (많이 겹칠수록 우선) + 겹치는 절대 개수
+  return overlap / recipe.ing.length * 10 + overlap;
+}
+
+function pickRecipe(excludeName){
+  const scored = RECIPES
+    .filter(r=> r.name !== excludeName)
+    .map(r=>({ r, s: scoreRecipe(r) }))
+    .filter(x=>x.s >= 0)
+    .sort((a,b)=> b.s - a.s);
+
+  if(scored.length === 0) return null;
+
+  const topScore = scored[0].s;
+  const topPool = scored.filter(x => x.s >= topScore - 1.5).map(x=>x.r);
+  state.lastPool = topPool;
+  const picked = topPool[Math.floor(Math.random()*topPool.length)];
+  return picked;
+}
+
+function renderRecipe(recipe){
+  document.getElementById('empty-state').style.display = 'none';
+  const card = document.getElementById('recipe-card');
+  card.classList.add('show');
+
+  const overlap = recipe.ing.filter(i=>state.selected.has(i)).length;
+  const rate = Math.round(overlap/recipe.ing.length*100);
+  document.getElementById('match-tag').textContent = `보유 재료 일치율 ${rate}%`;
+  document.getElementById('rc-name').textContent = recipe.name;
+  document.getElementById('rc-time').textContent = "⏱ " + recipe.time;
+  document.getElementById('rc-level').textContent = "🔥 " + recipe.level;
+
+  document.getElementById('rc-ingredients').innerHTML = recipe.ing.map(i=>{
+    const have = state.selected.has(i);
+    return `<span class="ing-pill ${have?'have':''}">${i}${have?' ✓':''}</span>`;
+  }).join("");
+
+  document.getElementById('rc-steps').innerHTML = recipe.steps.map(s=>`<li>${s}</li>`).join("");
+
+  document.getElementById('pool-note').textContent =
+    `현재 보유 재료 조합으로 등록된 레시피 ${state.lastPool.length}개 중 하나를 보여드렸어요.`;
+
+  state.lastPicked = recipe;
+}
+
+document.getElementById('btn-random').addEventListener('click', ()=>{
+  const recipe = pickRecipe();
+  if(!recipe){
+    alert("아직 이 재료 조합에 맞는 레시피가 등록되어 있지 않아요. 다른 재료를 선택해보세요.");
+    return;
+  }
+  renderRecipe(recipe);
+});
+
+document.getElementById('btn-again').addEventListener('click', ()=>{
+  const recipe = pickRecipe(state.lastPicked ? state.lastPicked.name : null);
+  if(!recipe){
+    alert("이 재료로 뽑을 수 있는 다른 레시피가 더 없어요.");
+    return;
+  }
+  renderRecipe(recipe);
+});
+
+document.getElementById('btn-shownum').addEventListener('click', ()=>{
+  if(state.lastPool.length <= 1){
+    alert("현재 이 조합으로는 후보가 1개뿐이에요.");
+    return;
+  }
+  alert("후보 목록:\n" + state.lastPool.map(r=>"· "+r.name).join("\n"));
+});
+
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  state.selected.clear();
+  document.querySelectorAll('.chip input').forEach(i=> i.checked = false);
+  updateSummary();
+  document.getElementById('recipe-card').classList.remove('show');
+  document.getElementById('empty-state').style.display = 'flex';
+  document.getElementById('pool-note').textContent = '';
+});
+
+updateSummary();
+</script>
+</body>
+</html>

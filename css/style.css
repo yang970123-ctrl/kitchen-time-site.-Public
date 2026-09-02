@@ -292,6 +292,34 @@ a{color:inherit;text-decoration:none;}
 }
 .table-filter-empty.show{ display: block; }
 
+.table-pagination{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.table-pagination button{
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  padding: 6px 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color .12s ease, color .12s ease, background .12s ease;
+}
+.table-pagination button:hover{
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.table-pagination button.active{
+  background: var(--ember);
+  border-color: var(--ember);
+  color: #fff;
+}
+
 /* ---------- Time table ---------- */
 .time-table{
   width:100%;

@@ -40,6 +40,8 @@
   <section class="section container">
     <h2>음식별 온도·시간 한눈에 보기</h2>
 
+    <div class="safety-note">※ 제품마다 화력이 달라서 첫 조리는 2~3분 일찍 확인하는 걸 추천해요.</div>
+
     <div class="table-filter">
       <span class="icon">🔍</span>
       <input type="text" id="airfryer-filter" placeholder="음식 이름으로 찾기 (예: 삼겹살, 만두)" autocomplete="off">
@@ -48,56 +50,58 @@
 
 <table class="time-table time-table--split" id="airfryer-table">
   <caption>에어프라이어 예열 후 기준</caption>
-  <thead><tr><th>음식</th><th>온도</th><th>시간</th><th>비고</th></tr></thead>
+  <thead><tr><th>메뉴</th><th>온도</th><th>시간</th><th>조리방법</th></tr></thead>
   <tbody>
-<tr><td>냉동만두 (10개)</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td class="num" data-label="비고">중간에 한 번 흔들어주기</td></tr>
-<tr><td>냉동피자 (1인용)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">예열 후 바로 조리</td></tr>
-<tr><td>감자 웨지 (냉동)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">15분</td><td class="num" data-label="비고">중간 흔들기 1회</td></tr>
-<tr><td>통고구마 (작은 것)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">25~30분</td><td class="num" data-label="비고">꼬치로 찔러 확인</td></tr>
-<tr><td>새우튀김 (냉동)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">간격 두고 배치</td></tr>
-<tr><td>치킨너겟 (냉동)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">중간 흔들기 1회</td></tr>
-<tr><td>식빵 토스트</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">3~4분</td><td class="num" data-label="비고">노릇해지면 바로 꺼내기</td></tr>
-<tr><td>삼겹살 (1cm)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">5분 지점 1회 뒤집기</td></tr>
-<tr><td>목살 스테이크 (2cm)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">12분</td><td class="num" data-label="비고">6분 지점 뒤집기</td></tr>
-<tr><td>안심 스테이크 (2cm)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">4분 지점 뒤집기</td></tr>
-<tr><td>등심 스테이크 (2cm)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">7분</td><td class="num" data-label="비고">3분 30초 지점 뒤집기</td></tr>
-<tr><td>립아이 스테이크 (2cm)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">5분 지점 뒤집기</td></tr>
-<tr><td>닭가슴살 (통)</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~14분</td><td class="num" data-label="비고">중간 1회 뒤집기</td></tr>
-<tr><td>닭다리살 (순살)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">18분</td><td class="num" data-label="비고">10분 지점 뒤집기</td></tr>
-<tr><td>오리 가슴살</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12분</td><td class="num" data-label="비고">지방면 아래로 시작</td></tr>
-<tr><td>양고기 램찹</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">9분</td><td class="num" data-label="비고">4~5분 지점 뒤집기</td></tr>
-<tr><td>베이컨</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td class="num" data-label="비고">겹치지 않게 배치</td></tr>
-<tr><td>함박·패티 (냉장, 1.5cm)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">가운데 갈라 확인</td></tr>
-<tr><td>냉동감자튀김 (일반)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">12~15분</td><td class="num" data-label="비고">중간 흔들기 1회</td></tr>
-<tr><td>냉동핫도그</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">중간 뒤집기</td></tr>
-<tr><td>냉동돈까스</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">15분</td><td class="num" data-label="비고">중간 뒤집기 1회</td></tr>
-<tr><td>냉동새우까스</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">중간 뒤집기 1회</td></tr>
-<tr><td>군만두 (물 없이)</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">앞뒤 뒤집기</td></tr>
-<tr><td>냉동 타코야끼</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">중간 흔들기 1회</td></tr>
-<tr><td>냉동 양파링</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">겹치지 않게 배치</td></tr>
-<tr><td>냉동 모짜렐라스틱</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">6분</td><td class="num" data-label="비고">붙지 않게 간격 두기</td></tr>
-<tr><td>브로콜리 (생)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">오일 살짝 코팅</td></tr>
-<tr><td>방울토마토</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">6분</td><td class="num" data-label="비고">껍질 터짐 확인</td></tr>
-<tr><td>아스파라거스</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">7분</td><td class="num" data-label="비고">오일 살짝 코팅</td></tr>
-<tr><td>단호박 (슬라이스)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12분</td><td class="num" data-label="비고">두께에 따라 조절</td></tr>
-<tr><td>가지 구이</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">오일 코팅 후 조리</td></tr>
-<tr><td>새송이버섯 구이</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">큼직하게 썰기</td></tr>
-<tr><td>연어 스테이크 (2cm)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">중간 뒤집기 1회</td></tr>
-<tr><td>고등어 (반 마리)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12분</td><td class="num" data-label="비고">껍질쪽 아래로 시작</td></tr>
-<tr><td>오징어링</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">6분</td><td class="num" data-label="비고">붙지 않게 배치</td></tr>
-<tr><td>갈릭브레드</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">5분</td><td class="num" data-label="비고">노릇해지면 바로 꺼내기</td></tr>
-<tr><td>크루아상 (냉동생지)</td><td class="num" data-label="온도">170℃</td><td class="num" data-label="시간">12~15분</td><td class="num" data-label="비고">제품 설명서 우선 참고</td></tr>
-<tr><td>계란빵 (냉동)</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">중간 확인</td></tr>
-<tr><td>고구마맛탕용 고구마</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">15분</td><td class="num" data-label="비고">조각 크기에 따라 조절</td></tr>
-<tr><td>옥수수 (통)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">15분</td><td class="num" data-label="비고">중간 1회 뒤집기</td></tr>
-<tr><td>두부 (스테이크용)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12분</td><td class="num" data-label="비고">앞뒤 뒤집기 1회</td></tr>
-<tr><td>만두피자 (퓨전)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">치즈 녹는 정도 확인</td></tr>
-<tr><td>훈제오리</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">지방면 아래로 시작</td></tr>
-<tr><td>소세지 (냉장)</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">중간 굴려주기</td></tr>
-<tr><td>냉동 감자전</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10분</td><td class="num" data-label="비고">중간 뒤집기 1회</td></tr>
-<tr><td>냉동 핫윙 (치킨윙)</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">15분</td><td class="num" data-label="비고">중간 뒤집기 1회</td></tr>
-<tr><td>냉동 어묵꼬치</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">8분</td><td class="num" data-label="비고">겹치지 않게 배치</td></tr>
-<tr><td>마늘빵 (냉동)</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">6분</td><td class="num" data-label="비고">눌음 확인</td></tr>
+<tr><td>삼겹살</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~20분</td><td data-label="조리방법">소금·후추 → 넣고 굽기</td></tr>
+<tr><td>통삼겹살</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">25~30분</td><td data-label="조리방법">밑간 → 껍질 부분 위로 굽기</td></tr>
+<tr><td>목살</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">소금·후추 → 앞뒤 굽기</td></tr>
+<tr><td>돼지갈비</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~20분</td><td data-label="조리방법">양념 → 뒤집어가며 굽기</td></tr>
+<tr><td>양념갈비</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">양념 → 중간에 뒤집기</td></tr>
+<tr><td>닭다리</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">20~25분</td><td data-label="조리방법">소금·후추 → 껍질 위로 굽기</td></tr>
+<tr><td>닭날개</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">18~22분</td><td data-label="조리방법">밑간 → 중간에 뒤집기</td></tr>
+<tr><td>닭봉</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">20~25분</td><td data-label="조리방법">밑간 → 골고루 굽기</td></tr>
+<tr><td>닭가슴살</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~18분</td><td data-label="조리방법">올리브유·소금 → 굽기</td></tr>
+<tr><td>닭껍질</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">소금 → 겹치지 않게 펼치기</td></tr>
+<tr><td>닭꼬치</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">양념 → 꼬치째 굽기</td></tr>
+<tr><td>치킨윙</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">15~20분</td><td data-label="조리방법">밑간 → 바삭하게 굽기</td></tr>
+<tr><td>스테이크</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8~12분</td><td data-label="조리방법">소금·후추 → 앞뒤 굽기</td></tr>
+<tr><td>소갈비살</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">7~10분</td><td data-label="조리방법">소금·후추 → 짧게 굽기</td></tr>
+<tr><td>떡갈비</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">냉장 떡갈비 → 뒤집어 굽기</td></tr>
+<tr><td>고등어</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~18분</td><td data-label="조리방법">물기 제거 → 껍질 위로 굽기</td></tr>
+<tr><td>연어</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">10~13분</td><td data-label="조리방법">소금·후추 → 껍질 아래로 굽기</td></tr>
+<tr><td>새우</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">소금·후추 → 올리브유 → 굽기</td></tr>
+<tr><td>오징어</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~12분</td><td data-label="조리방법">손질 → 소금·후추 → 굽기</td></tr>
+<tr><td>쭈꾸미</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">양념 → 펼쳐서 굽기</td></tr>
+<tr><td>가리비 치즈구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">치즈 올려 굽기</td></tr>
+<tr><td>관자 버터구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">7~9분</td><td data-label="조리방법">버터·소금 → 굽기</td></tr>
+<tr><td>명란구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">명란을 호일에 올려 굽기</td></tr>
+<tr><td>장어구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">양념 → 중간에 덧바르기</td></tr>
+<tr><td>조기</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~18분</td><td data-label="조리방법">물기 제거 → 소금 → 굽기</td></tr>
+<tr><td>치킨너겟</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">냉동 상태 그대로</td></tr>
+<tr><td>감자튀김</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">냉동 상태 → 중간에 흔들기</td></tr>
+<tr><td>웨지감자</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">18~22분</td><td data-label="조리방법">기름·소금 → 펼쳐 굽기</td></tr>
+<tr><td>해시브라운</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">냉동 상태 그대로</td></tr>
+<tr><td>치즈스틱</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">6~8분</td><td data-label="조리방법">냉동 상태 그대로</td></tr>
+<tr><td>고구마튀김</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">15~20분</td><td data-label="조리방법">고구마 + 기름 → 굽기</td></tr>
+<tr><td>김말이</td><td class="num" data-label="온도">200℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">냉동 상태 → 뒤집기</td></tr>
+<tr><td>만두튀김</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">기름 살짝 → 중간에 뒤집기</td></tr>
+<tr><td>떡튀김</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~12분</td><td data-label="조리방법">떡에 기름 → 굽기</td></tr>
+<tr><td>돈까스</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">15~18분</td><td data-label="조리방법">기름 살짝 → 뒤집어 굽기</td></tr>
+<tr><td>새우튀김</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">냉동 상태 그대로</td></tr>
+<tr><td>오징어튀김</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">냉동 상태 그대로</td></tr>
+<tr><td>핫도그</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">냉동 상태 → 굽기</td></tr>
+<tr><td>군만두</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">기름 살짝 → 뒤집기</td></tr>
+<tr><td>식빵 러스크</td><td class="num" data-label="온도">160℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">버터·설탕 → 잘라 굽기</td></tr>
+<tr><td>군고구마</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">35~45분</td><td data-label="조리방법">씻어서 통째로 굽기</td></tr>
+<tr><td>군감자</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">25~30분</td><td data-label="조리방법">감자 + 소금·오일 → 굽기</td></tr>
+<tr><td>구운 옥수수</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">버터 바르고 굽기</td></tr>
+<tr><td>구운 양파</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">반으로 잘라 소금·오일</td></tr>
+<tr><td>마늘 버터구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">10~12분</td><td data-label="조리방법">버터·소금 → 호일에 넣기</td></tr>
+<tr><td>아스파라거스</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">7~10분</td><td data-label="조리방법">오일·소금 → 펼쳐 굽기</td></tr>
+<tr><td>버섯 버터구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">버터·소금 → 굽기</td></tr>
+<tr><td>콘치즈</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">8~10분</td><td data-label="조리방법">옥수수+마요+치즈 → 굽기</td></tr>
+<tr><td>두부구이</td><td class="num" data-label="온도">190℃</td><td class="num" data-label="시간">15~20분</td><td data-label="조리방법">물기 제거 → 소금·오일</td></tr>
+<tr><td>떡갈비 치즈구이</td><td class="num" data-label="온도">180℃</td><td class="num" data-label="시간">12~15분</td><td data-label="조리방법">떡갈비 굽고 치즈 올리기</td></tr>
 </tbody>
 </table>
     <p class="table-filter-empty" id="airfryer-filter-empty">일치하는 음식이 없어요. 다른 검색어로 찾아보세요.</p>
@@ -105,6 +109,16 @@
 
     <h2>에어프라이어 공통 팁</h2>
     <ul class="tip-list"><li>예열 3분은 생략하지 마세요. 예열 없이 넣으면 표보다 2~3분 더 걸립니다.</li><li>바스켓에 겹쳐 올리면 익는 속도가 크게 달라지니 한 겹으로 펴서 조리하세요.</li><li>냉동식품은 서로 붙어있는 것만 떼어주면 되고, 해동은 하지 않아도 됩니다.</li><li>정확도를 높이려면 표의 시간보다 1~2분 전에 문을 열어 상태를 확인하세요.</li></ul>
+
+    <h2>🔥 에어프라이어 기본 공식</h2>
+    <ul class="tip-list">
+      <li><b>냉동 튀김류</b> — 180~200℃ / 8~15분</li>
+      <li><b>고기</b> — 180~200℃ / 10~25분</li>
+      <li><b>생선</b> — 180℃ / 10~20분</li>
+      <li><b>채소</b> — 180~190℃ / 7~20분</li>
+      <li><b>고구마·감자</b> — 180~190℃ / 25~45분</li>
+    </ul>
+
     <div class="safety-note">닭고기·패티는 반드시 74℃ / 71℃ 이상 도달을 확인하세요. 자세한 부위별 온도는 <a href="thermometer-guide.html">탐침 온도계 사용법</a> 페이지를 참고하세요.</div>
   </section>
   <div class="container">

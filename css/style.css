@@ -211,9 +211,10 @@ a{color:inherit;text-decoration:none;}
   position:absolute;
   top:0;
   transform:translateX(-50%);
+  white-space:nowrap;
 }
 .gauge-ticks span:first-child{ left:0; transform:translateX(0); }
-.gauge-ticks span:last-child{ left:auto; right:0; transform:translateX(0); }
+.gauge-ticks span:last-child{ left:auto; right:-4px; transform:translateX(0); white-space:nowrap; }
 .gauge-zone{
   position:absolute;
   top:-9px;
